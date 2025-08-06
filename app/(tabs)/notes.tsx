@@ -125,33 +125,42 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
         {/* DEUXIÈME LIGNE : Description (si elle existe) */}
         {item.description && (
           <View style={styles.descriptionRow}>
-            <Text style={styles.noteDescription} numberOfLines={1} ellipsizeMode="tail">
-              {item.description}
-            </Text>
+            <View style={styles.descriptionContainer}>
+              <Text style={styles.descriptionIcon}>💭</Text>
+              <Text style={styles.noteDescription} numberOfLines={1} ellipsizeMode="tail">
+                {item.description}
+              </Text>
+            </View>
           </View>
         )}
 
-        {/* TROISIÈME LIGNE : Lieu et tags (si ils existent) */}
+        {/* TROISIÈME LIGNE : Lieu et tags dans des badges */}
         {(item.location || item.tags) && (
-          <View style={styles.metaInfoRow}>
+          <View style={styles.badgesRow}>
             {item.location && (
-              <Text style={styles.noteLocation} numberOfLines={1} ellipsizeMode="tail">
-                📍 {item.location}
-              </Text>
+              <View style={styles.locationBadge}>
+                <Text style={styles.badgeText} numberOfLines={1} ellipsizeMode="tail">
+                  📍 {item.location}
+                </Text>
+              </View>
             )}
             {item.tags && (
-              <Text style={styles.noteTags} numberOfLines={1} ellipsizeMode="tail">
-                🏷️ {item.tags}
-              </Text>
+              <View style={styles.tagsBadge}>
+                <Text style={styles.badgeText} numberOfLines={1} ellipsizeMode="tail">
+                  🏷️ {item.tags}
+                </Text>
+              </View>
             )}
           </View>
         )}
 
         {/* Aperçu du contenu */}
         {item.content && (
-          <Text style={styles.notePreview} numberOfLines={2}>
-            {getPreviewText(item.content)}
-          </Text>
+          <View style={styles.contentPreviewContainer}>
+            <Text style={styles.notePreview} numberOfLines={2}>
+              {getPreviewText(item.content)}
+            </Text>
+          </View>
         )}
       </TouchableOpacity>
     </View>
@@ -1004,21 +1013,68 @@ const createStyles = (theme: any) => StyleSheet.create({
     alignItems: 'center',
     gap: 8,
   },
-  notePreview: {
-    fontSize: 15,
-    fontFamily: 'Inter-Regular',
-    color: theme.colors.textSecondary,
-    lineHeight: 22,
-    marginTop: 4,
-  },
   descriptionRow: {
-    marginBottom: 4,
+    marginBottom: 8,
+  },
+  descriptionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: theme.colors.primary + '15',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderLeftWidth: 3,
+    borderLeftColor: theme.colors.primary,
+  },
+  descriptionIcon: {
+    fontSize: 14,
   },
   noteDescription: {
-    fontSize: 13,
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: theme.colors.primary,
+    flex: 1,
+  },
+  badgesRow: {
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 8,
+    flexWrap: 'wrap',
+  },
+  locationBadge: {
+    backgroundColor: theme.colors.success + '20',
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderWidth: 1,
+    borderColor: theme.colors.success + '40',
+    flex: 1,
+    minWidth: 0,
+  },
+  tagsBadge: {
+    backgroundColor: theme.colors.warning + '20',
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderWidth: 1,
+    borderColor: theme.colors.warning + '40',
+    flex: 1,
+    minWidth: 0,
+  },
+  badgeText: {
+    fontSize: 11,
     fontFamily: 'Inter-Medium',
     color: theme.colors.textSecondary,
-    fontStyle: 'italic',
+  },
+  contentPreviewContainer: {
+    marginTop: 4,
+  },
+  notePreview: {
+    fontSize: 14,
+    fontFamily: 'Inter-Regular',
+    color: theme.colors.textSecondary,
+    lineHeight: 20,
   },
   metaInfoRow: {
     flexDirection: 'row',
@@ -1026,15 +1082,15 @@ const createStyles = (theme: any) => StyleSheet.create({
     marginBottom: 4,
   },
   noteLocation: {
-    fontSize: 11,
-    fontFamily: 'Inter-Regular',
-    color: theme.colors.primary,
-    flex: 1,
+    fontSize: 13,
+    fontFamily: 'Inter-Medium',
+    color: theme.colors.textSecondary,
+    fontStyle: 'italic',
   },
   noteTags: {
-    fontSize: 11,
+    fontSize: 13,
     fontFamily: 'Inter-Regular',
-    color: theme.colors.warning,
+    color: theme.colors.textSecondary,
     flex: 1,
   },
   listContent: {

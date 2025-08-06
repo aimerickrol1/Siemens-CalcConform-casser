@@ -1203,7 +1203,4 @@ const createStyles = (theme: any) => StyleSheet.create({
     color: theme.colors.text,
     minHeight: 48,
   },
-  actionButton: {
-    padding: 8,
-  },
 });

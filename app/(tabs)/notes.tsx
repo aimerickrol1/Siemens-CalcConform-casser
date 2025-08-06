@@ -138,14 +138,14 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
             {item.location && (
               <View style={styles.locationBadge}>
                 <Text style={styles.badgeText} numberOfLines={1} ellipsizeMode="tail">
-                  📍 {item.location}
+                  Lieu: {item.location}
                 </Text>
               </View>
             )}
             {item.tags && (
               <View style={styles.tagsBadge}>
                 <Text style={styles.badgeText} numberOfLines={1} ellipsizeMode="tail">
-                  🏷️ {item.tags}
+                  Tags: {item.tags}
                 </Text>
               </View>
             )}
@@ -153,9 +153,8 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
         )}
 
         {item.content && (
-          <View style={styles.contentPreviewContainer}>
             <Text style={styles.notePreview} numberOfLines={2}>
-              {getPreviewText(item.content)}
+              Description: {item.description}
             </Text>
           </View>
         )}
@@ -1027,16 +1026,12 @@ const createStyles = (theme: any) => StyleSheet.create({
   descriptionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
     backgroundColor: theme.colors.primary + '15',
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderLeftWidth: 3,
     borderLeftColor: theme.colors.primary,
-  },
-  descriptionIcon: {
-    fontSize: 14,
   },
   noteDescription: {
     fontSize: 14,

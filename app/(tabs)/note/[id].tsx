@@ -371,7 +371,6 @@ export default function NoteDetailScreen() {
           )}
         </View>
 
-        {/* Galerie d'images */}
         <NoteImageGallery
           images={note.images || []}
           onRemoveImage={handleRemoveImage}
@@ -379,7 +378,6 @@ export default function NoteDetailScreen() {
           noteId={note.id}
         />
 
-        {/* Contenu de la note */}
         <View style={styles.contentSection}>
           <Text style={styles.contentLabel}>{strings.noteContent}</Text>
           <TextInput
@@ -404,7 +402,6 @@ export default function NoteDetailScreen() {
         </View>
       </ScrollView>
 
-      {/* Input caché pour web */}
       {Platform.OS === 'web' && (
         <input
           ref={fileInputRef}

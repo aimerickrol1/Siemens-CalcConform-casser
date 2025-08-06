@@ -515,7 +515,6 @@ export default function ZoneDetailScreen() {
           }
         }}
       >
-        {/* En-tête du volet */}
         <View style={styles.shutterHeader}>
           <View style={styles.shutterTitleSection}>
             {selectionMode && (
@@ -530,7 +529,6 @@ export default function ZoneDetailScreen() {
                 )}
               </TouchableOpacity>
             )}
-            {/* Nom du volet cliquable pour édition directe */}
             <TouchableOpacity 
               style={[styles.shutterNameContainer, selectionMode && styles.shutterNameContainerSelection]}
               onPress={() => !selectionMode && openNameEditModal(item)}
@@ -578,7 +576,6 @@ export default function ZoneDetailScreen() {
           )}
         </View>
 
-        {/* Section d'édition des mesures de débit */}
         <TouchableOpacity 
           style={styles.flowEditingContainer}
           activeOpacity={1}
@@ -639,7 +636,6 @@ export default function ZoneDetailScreen() {
           </View>
         </TouchableOpacity>
 
-        {/* Champ de remarques avec encadré */}
         <TouchableOpacity 
           style={styles.remarksEditingContainer}
           activeOpacity={1}
@@ -668,7 +664,6 @@ export default function ZoneDetailScreen() {
           />
         </TouchableOpacity>
 
-        {/* Indicateur de conformité */}
         <View style={styles.complianceSection}>
           <ComplianceIndicator compliance={compliance} size="small" />
         </View>

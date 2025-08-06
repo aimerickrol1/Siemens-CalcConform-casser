@@ -122,7 +122,6 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
           </View>
         </View>
 
-        {/* DEUXIÈME LIGNE : Description (si elle existe) */}
         {item.description && (
           <View style={styles.descriptionRow}>
             <View style={styles.descriptionContainer}>
@@ -134,7 +133,6 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
           </View>
         )}
 
-        {/* TROISIÈME LIGNE : Lieu et tags dans des badges */}
         {(item.location || item.tags) && (
           <View style={styles.badgesRow}>
             {item.location && (
@@ -154,7 +152,6 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
           </View>
         )}
 
-        {/* Aperçu du contenu */}
         {item.content && (
           <View style={styles.contentPreviewContainer}>
             <Text style={styles.notePreview} numberOfLines={2}>

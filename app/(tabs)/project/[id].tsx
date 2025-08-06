@@ -406,7 +406,6 @@ export default function ProjectDetailScreen() {
                 </TouchableOpacity>
               )}
               <Building size={20} color={theme.colors.primary} />
-              {/* NOUVEAU : Nom du bâtiment cliquable pour édition directe */}
               <TouchableOpacity 
                 style={[styles.buildingNameContainer, selectionMode && styles.buildingNameContainerSelection]}
                 onPress={() => !selectionMode && openNameEditModal(item)}
@@ -874,7 +873,6 @@ const createStyles = (theme: any) => StyleSheet.create({
     padding: 2,
     flexShrink: 0,
   },
-  // NOUVEAU : Conteneur pour le nom du bâtiment cliquable
   buildingNameContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -965,7 +963,6 @@ const createStyles = (theme: any) => StyleSheet.create({
       paddingHorizontal: 20,
     }),
   },
-  // NOUVEAU : Modal spécifique pour l'édition du nom
 });
 
 // Composants modaux définis au niveau du fichier

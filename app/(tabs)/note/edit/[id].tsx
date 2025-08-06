@@ -247,6 +247,29 @@ export default function EditNoteScreen() {
           <Input
             label={strings.noteTitle}
             value={title}
+            onChangeText={setTitle}
+            error={errors.title}
+          />
+
+          <Input
+            label={strings.description}
+            value={description}
+            onChangeText={setDescription}
+            multiline
+          />
+
+          <Input
+            label={strings.location}
+            value={location}
+            onChangeText={setLocation}
+          />
+
+          <Input
+            label={strings.tags}
+            value={tags}
+            onChangeText={setTags}
+          />
+
           {/* Galerie d'images */}
           <NoteImageGallery 
             images={images}
@@ -306,34 +329,6 @@ export default function EditNoteScreen() {
           style={styles.footerButton}
         />
       </View>
-        {/* Sélecteur de priorité */}
-        <View style={styles.priorityContainer}>
-          <Text style={styles.priorityLabel}>Priorité</Text>
-          <View style={styles.priorityOptions}>
-            {(['none', 'low', 'medium', 'high'] as NotePriority[]).map((priorityOption) => (
-              <TouchableOpacity
-                key={priorityOption}
-                style={[
-                  styles.priorityOption,
-                  priority === priorityOption && styles.priorityOptionSelected,
-                  { borderColor: getPriorityColor(priorityOption) }
-                ]}
-                onPress={() => setPriority(priorityOption)}
-              >
-                <View style={[styles.priorityDot, { backgroundColor: getPriorityColor(priorityOption) }]} />
-                <Text style={[
-                  styles.priorityOptionText,
-                  priority === priorityOption && styles.priorityOptionTextSelected
-                ]}>
-                  {getPriorityLabel(priorityOption)}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-
-
-
     </View>
   );
 }

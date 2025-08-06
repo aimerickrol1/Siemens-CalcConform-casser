@@ -15,6 +15,9 @@ export default function CreateNoteScreen() {
   const { theme } = useTheme();
   const { createNote, notes } = useStorage();
   const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [location, setLocation] = useState('');
+  const [tags, setTags] = useState('');
   const [content, setContent] = useState('');
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -73,6 +76,9 @@ export default function CreateNoteScreen() {
       
       const note = await createNote({
         title: finalTitle,
+        description: description.trim() || undefined,
+        location: location.trim() || undefined,
+        tags: tags.trim() || undefined,
         content: content.trim(),
         images: images.length > 0 ? images : undefined,
       });
@@ -198,6 +204,28 @@ export default function CreateNoteScreen() {
             error={errors.title}
           />
 
+          <Input
+            label="Description"
+            value={description}
+            onChangeText={setDescription}
+            placeholder="Brève description de la note"
+            multiline
+            numberOfLines={2}
+          />
+
+          <Input
+            label="Lieu"
+            value={location}
+            onChangeText={setLocation}
+            placeholder="Ex: Chantier Rivoli, Bureau, Site client"
+          />
+
+          <Input
+            label="Mots-clés"
+            value={tags}
+            onChangeText={setTags}
+            placeholder="Ex: urgent, mesures, problème, solution"
+          />
 
           {/* Galerie d'images */}
           <NoteImageGallery 

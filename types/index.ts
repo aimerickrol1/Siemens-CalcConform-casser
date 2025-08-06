@@ -53,6 +53,9 @@ export type ComplianceStatus = 'compliant' | 'acceptable' | 'non-compliant';
 export interface Note {
   id: string;
   title: string;
+  description?: string;
+  location?: string;
+  tags?: string;
   content: string;
   createdAt: Date;
   updatedAt: Date;

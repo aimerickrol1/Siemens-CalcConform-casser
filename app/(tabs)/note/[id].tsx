@@ -345,6 +345,24 @@ export default function NoteDetailScreen() {
               <Text style={styles.metaValue}>{formatDate(note.updatedAt)}</Text>
             </View>
           )}
+          {note.description && (
+            <View style={styles.metaRow}>
+              <Text style={styles.metaLabel}>Description</Text>
+              <Text style={styles.metaValue}>{note.description}</Text>
+            </View>
+          )}
+          {note.location && (
+            <View style={styles.metaRow}>
+              <Text style={styles.metaLabel}>Lieu</Text>
+              <Text style={styles.metaValue}>{note.location}</Text>
+            </View>
+          )}
+          {note.tags && (
+            <View style={styles.metaRow}>
+              <Text style={styles.metaLabel}>Mots-clés</Text>
+              <Text style={styles.metaValue}>{note.tags}</Text>
+            </View>
+          )}
         </View>
 
         {/* Galerie d'images */}

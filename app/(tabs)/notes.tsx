@@ -78,7 +78,7 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
         style={[
           styles.noteCard,
           isSelected && styles.selectedCard,
-          isFavorite && styles.favoriteCard
+          isFavorite && styles.favoriteCard,
           {
             borderColor: getPriorityColor(item.priority || 'none'),
             borderWidth: getPriorityBorderWidth(item.priority || 'none')

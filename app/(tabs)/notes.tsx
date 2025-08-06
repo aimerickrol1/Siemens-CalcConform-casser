@@ -122,6 +122,31 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
           </View>
         </View>
 
+        {/* DEUXIÈME LIGNE : Description (si elle existe) */}
+        {item.description && (
+          <View style={styles.descriptionRow}>
+            <Text style={styles.noteDescription} numberOfLines={1} ellipsizeMode="tail">
+              {item.description}
+            </Text>
+          </View>
+        )}
+
+        {/* TROISIÈME LIGNE : Lieu et tags (si ils existent) */}
+        {(item.location || item.tags) && (
+          <View style={styles.metaInfoRow}>
+            {item.location && (
+              <Text style={styles.noteLocation} numberOfLines={1} ellipsizeMode="tail">
+                📍 {item.location}
+              </Text>
+            )}
+            {item.tags && (
+              <Text style={styles.noteTags} numberOfLines={1} ellipsizeMode="tail">
+                🏷️ {item.tags}
+              </Text>
+            )}
+          </View>
+        )}
+
         {/* Aperçu du contenu */}
         {item.content && (
           <Text style={styles.notePreview} numberOfLines={2}>
@@ -985,6 +1010,32 @@ const createStyles = (theme: any) => StyleSheet.create({
     color: theme.colors.textSecondary,
     lineHeight: 22,
     marginTop: 4,
+  },
+  descriptionRow: {
+    marginBottom: 4,
+  },
+  noteDescription: {
+    fontSize: 13,
+    fontFamily: 'Inter-Medium',
+    color: theme.colors.textSecondary,
+    fontStyle: 'italic',
+  },
+  metaInfoRow: {
+    flexDirection: 'row',
+    gap: 12,
+    marginBottom: 4,
+  },
+  noteLocation: {
+    fontSize: 11,
+    fontFamily: 'Inter-Regular',
+    color: theme.colors.primary,
+    flex: 1,
+  },
+  noteTags: {
+    fontSize: 11,
+    fontFamily: 'Inter-Regular',
+    color: theme.colors.warning,
+    flex: 1,
   },
   listContent: {
     padding: 16,

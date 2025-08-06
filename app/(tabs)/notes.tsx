@@ -1203,26 +1203,6 @@ const createStyles = (theme: any) => StyleSheet.create({
     color: theme.colors.text,
     minHeight: 48,
   },
-  editButtonContainer: {
-    marginTop: 12,
-    alignItems: 'center',
-  },
-  editButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    backgroundColor: theme.colors.primary + '20',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: theme.colors.primary + '40',
-  },
-  editButtonText: {
-    fontSize: 13,
-    fontFamily: 'Inter-SemiBold',
-    color: theme.colors.primary,
-  },
   actionButton: {
     padding: 8,
   },

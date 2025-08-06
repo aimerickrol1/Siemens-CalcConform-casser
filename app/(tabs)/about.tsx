@@ -126,8 +126,6 @@ export default function AboutScreen() {
             <Text style={styles.copyright}>{strings.copyright}</Text>
           </View>
 
-          {/* Informations de l'application */}
-          {/* Bouton d'installation PWA si disponible et pas encore installée */}
           {(showInstallButton || (isIOSDevice && !isInstalled)) && Platform.OS === 'web' && (
             <View style={styles.installSection}>
               <TouchableOpacity 
@@ -161,7 +159,6 @@ export default function AboutScreen() {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>{strings.application}</Text>
             
-            {/* Nouveau : Tutoriel d'installation */}
             {Platform.OS === 'web' && renderInfoItem(
               <Download size={20} color={theme.colors.success} />,
               'Installer l\'application',
@@ -185,7 +182,6 @@ export default function AboutScreen() {
             )}
           </View>
 
-          {/* Informations techniques */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>{strings.compliance}</Text>
             
@@ -204,7 +200,6 @@ export default function AboutScreen() {
             )}
           </View>
 
-          {/* Contact */}
           <View style={styles.section}>
             <Button
               title={strings.contactDeveloper}

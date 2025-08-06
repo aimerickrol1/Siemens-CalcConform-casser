@@ -334,7 +334,6 @@ export default function BuildingDetailScreen() {
           </View>
         </View>
 
-        {/* DEUXIÈME LIGNE : Description (si elle existe) */}
         {item.description && (
           <View style={styles.descriptionRow}>
             <Text style={styles.zoneDescription} numberOfLines={1} ellipsizeMode="tail">
@@ -343,9 +342,7 @@ export default function BuildingDetailScreen() {
           </View>
         )}
 
-        {/* TROISIÈME LIGNE COMPACTE : Détail VH/VB + Actions (SANS le pourcentage) */}
         <View style={styles.zoneBottomRow}>
-          {/* Détail des volets par type - COMPACT */}
           <View style={styles.shutterDetailsCompact}>
             {shutterDetails.highShutters > 0 && (
               <View style={styles.shutterTypeCompact}>
@@ -361,7 +358,6 @@ export default function BuildingDetailScreen() {
             )}
           </View>
 
-          {/* Actions - COMPACTES (maintenant à droite sans le pourcentage) */}
           {!selectionMode && (
             <View style={styles.actionButtonsCompact}>
               <TouchableOpacity 

@@ -22,7 +22,6 @@ export default function CreateNoteScreen() {
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{ title?: string }>({});
-  const [priority, setPriority] = useState<NotePriority>('none');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleBack = () => {
@@ -175,24 +174,6 @@ export default function CreateNoteScreen() {
 
   const handleRemoveImage = (index: number) => {
     setImages(prev => prev.filter((_, i) => i !== index));
-  };
-
-  const getPriorityColor = (priority: NotePriority) => {
-    switch (priority) {
-      case 'high': return '#FF4444';
-      case 'medium': return '#FF8800';
-      case 'low': return '#00AA44';
-      default: return theme.colors.textTertiary;
-    }
-  };
-
-  const getPriorityLabel = (priority: NotePriority) => {
-    switch (priority) {
-      case 'high': return 'Haute';
-      case 'medium': return 'Moyenne';
-      case 'low': return 'Basse';
-      default: return 'Aucune';
-    }
   };
 
   const styles = createStyles(theme);

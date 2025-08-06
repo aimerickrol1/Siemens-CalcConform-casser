@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform, ScrollView, TextInput, Animated } from 'react-native';
 import { router, useFocusEffect } from 'expo-router';
 import { Plus, FileText, Trash2, CreditCard as Edit3, Calendar, X, Star, SquareCheck as CheckSquare, Square, Filter, Dessert as SortDesc, Clock } from 'lucide-react-native';
+import { Settings } from 'lucide-react-native';
 import { Header } from '@/components/Header';
 import { Button } from '@/components/Button';
 import { Note } from '@/types';

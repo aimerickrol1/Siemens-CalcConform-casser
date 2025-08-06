@@ -1142,20 +1142,20 @@ const createStyles = (theme: any) => StyleSheet.create({
   modalContent: {
     backgroundColor: theme.colors.surface,
     borderRadius: 16,
-    padding: 20,
-    width: '100%',
+    padding: 24,
     maxWidth: 400,
-    maxHeight: '70%',
+    width: '90%',
+    alignSelf: 'center',
   },
   modalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 20,
   },
   modalTitle: {
     fontSize: 20,
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: 'Inter-Bold',
     color: theme.colors.text,
     flex: 1,
   },
@@ -1163,13 +1163,14 @@ const createStyles = (theme: any) => StyleSheet.create({
     padding: 4,
   },
   modalBody: {
-    marginBottom: 20,
+    marginBottom: 24,
   },
   modalText: {
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: 'Inter-Regular',
     color: theme.colors.textSecondary,
     lineHeight: 20,
+    marginBottom: 8,
   },
   modalBold: {
     fontFamily: 'Inter-SemiBold',

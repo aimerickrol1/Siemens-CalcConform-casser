@@ -22,7 +22,6 @@ export default function CreateNoteScreen() {
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{ title?: string }>({});
-  const [priority, setPriority] = useState<NotePriority>('none');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleBack = () => {
@@ -232,32 +231,6 @@ export default function CreateNoteScreen() {
             onChangeText={setTags}
           />
 
-          {/* Sélecteur de priorité */}
-          <View style={styles.priorityContainer}>
-            <Text style={styles.priorityLabel}>Priorité</Text>
-            <View style={styles.priorityOptions}>
-              {(['none', 'low', 'medium', 'high'] as NotePriority[]).map((priorityOption) => (
-                <TouchableOpacity
-                  key={priorityOption}
-                  style={[
-                    styles.priorityOption,
-                    priority === priorityOption && styles.priorityOptionSelected,
-                    { borderColor: getPriorityColor(priorityOption) }
-                  ]}
-                  onPress={() => setPriority(priorityOption)}
-                >
-                  <View style={[styles.priorityDot, { backgroundColor: getPriorityColor(priorityOption) }]} />
-                  <Text style={[
-                    styles.priorityOptionText,
-                    priority === priorityOption && styles.priorityOptionTextSelected
-                  ]}>
-                    {getPriorityLabel(priorityOption)}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
-
           <NoteImageGallery 
             images={images}
             onRemoveImage={handleRemoveImage}
@@ -330,48 +303,6 @@ const createStyles = (theme: any) => StyleSheet.create({
   contentContainer: {
     padding: 16,
     paddingBottom: 140, // Espace augmenté pour le bouton fixe
-  },
-  priorityContainer: {
-    marginTop: 16,
-    marginBottom: 16,
-  },
-  priorityLabel: {
-    fontSize: 14,
-    fontFamily: 'Inter-Medium',
-    color: theme.colors.textSecondary,
-    marginBottom: 12,
-  },
-  priorityOptions: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  priorityOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 8,
-    borderWidth: 1,
-    backgroundColor: theme.colors.surface,
-  },
-  priorityOptionSelected: {
-    backgroundColor: theme.colors.surfaceSecondary,
-  },
-  priorityDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginRight: 8,
-  },
-  priorityOptionText: {
-    fontSize: 14,
-    fontFamily: 'Inter-Regular',
-    color: theme.colors.textSecondary,
-  },
-  priorityOptionTextSelected: {
-    color: theme.colors.text,
-    fontFamily: 'Inter-Medium',
   },
   imageButtonContainer: {
     marginTop: 16,

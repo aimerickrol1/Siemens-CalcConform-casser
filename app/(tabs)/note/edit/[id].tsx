@@ -257,7 +257,6 @@ export default function EditNoteScreen() {
             value={description}
             onChangeText={setDescription}
             placeholder="Ex: Notes importantes du jour, Points à retenir..."
-            multiline
           />
 
           <Input

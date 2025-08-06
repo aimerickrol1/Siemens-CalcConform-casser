@@ -220,7 +220,6 @@ export default function CreateNoteScreen() {
             value={description}
             onChangeText={setDescription}
             placeholder="Ex: Notes importantes du jour, Points à retenir..."
-          />
 
           <Input
             label="Lieu"

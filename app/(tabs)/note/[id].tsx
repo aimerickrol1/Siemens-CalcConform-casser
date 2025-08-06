@@ -286,32 +286,6 @@ export default function NoteDetailScreen() {
     }).format(new Date(date));
   };
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'low':
-        return '#10B981';
-      case 'medium':
-        return '#F59E0B';
-      case 'high':
-        return '#EF4444';
-      default:
-        return theme.colors.textSecondary;
-    }
-  };
-
-  const getPriorityLabel = (priority: string) => {
-    switch (priority) {
-      case 'low':
-        return 'Faible';
-      case 'medium':
-        return 'Moyenne';
-      case 'high':
-        return 'Forte';
-      default:
-        return 'Aucune';
-    }
-  };
-
   const styles = createStyles(theme);
 
   if (loading) {
@@ -393,15 +367,6 @@ export default function NoteDetailScreen() {
             <View style={styles.metaRow}>
               <Text style={styles.metaLabel}>Mots-clés</Text>
               <Text style={styles.metaValue}>{note.tags}</Text>
-            </View>
-          )}
-          {note.priority && note.priority !== 'none' && (
-            <View style={styles.metaRow}>
-              <View style={[styles.priorityDot, { backgroundColor: getPriorityColor(note.priority) }]} />
-              <Text style={styles.metaLabel}>Priorité</Text>
-              <Text style={[styles.metaValue, { color: getPriorityColor(note.priority) }]}>
-                {getPriorityLabel(note.priority)}
-              </Text>
             </View>
           )}
         </View>
@@ -730,11 +695,6 @@ const createStyles = (theme: any) => StyleSheet.create({
   },
   titleEditIcon: {
     fontSize: 12,
-  },
-  priorityDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
   },
   inputLabel: {
     fontSize: 14,

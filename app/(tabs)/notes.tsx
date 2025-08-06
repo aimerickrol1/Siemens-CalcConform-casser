@@ -13,7 +13,6 @@ import { AnimatedCard } from '@/components/AnimatedCard';
 
 type SortOption = 'newest' | 'oldest' | 'title' | 'updated';
 type FilterOption = 'all' | 'with-images' | 'text-only';
-type NotePriority = 'none' | 'low' | 'medium' | 'high';
 
 // Composant séparé pour chaque note
 function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, isSelected, isFavorite, selectionMode, onLongPress, theme, strings }: {
@@ -53,23 +52,6 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
     return content.length > 120 ? content.substring(0, 120) + '...' : content;
   };
 
-  const getPriorityColor = (priority: NotePriority) => {
-    switch (priority) {
-      case 'low':
-        return '#10B981';
-      case 'medium':
-        return '#F59E0B';
-      case 'high':
-        return '#EF4444';
-      default:
-        return 'transparent';
-    }
-  };
-
-  const getPriorityBorderWidth = (priority: NotePriority) => {
-    return priority === 'none' ? 1 : 2;
-  };
-
   const styles = createStyles(theme);
 
   return (
@@ -78,11 +60,7 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
         style={[
           styles.noteCard,
           isSelected && styles.selectedCard,
-          isFavorite && styles.favoriteCard,
-          {
-            borderColor: getPriorityColor(item.priority || 'none'),
-            borderWidth: getPriorityBorderWidth(item.priority || 'none')
-          }
+          isFavorite && styles.favoriteCard
         ]}
         onPress={onPress}
         onLongPress={onLongPress}
@@ -108,14 +86,6 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
                 <Text style={styles.noteTitle} numberOfLines={1}>
                   {item.title || strings.untitledNote}
                 </Text>
-                {item.priority && item.priority !== 'none' && (
-                  <View style={[styles.priorityBadge, { backgroundColor: getPriorityColor(item.priority) }]}>
-                    <Text style={styles.priorityBadgeText}>
-                      {item.priority === 'low' ? 'Faible' : 
-                       item.priority === 'medium' ? 'Moyenne' : 'Forte'}
-                    </Text>
-                  </View>
-                )}
                 {item.images && item.images.length > 0 && (
                   <Text style={styles.photoIndicator}>
                     {item.images.length} photo{item.images.length > 1 ? 's' : ''}
@@ -1049,9 +1019,6 @@ const createStyles = (theme: any) => StyleSheet.create({
     color: theme.colors.primary,
     marginRight: 12,
   },
-  photoIndicatorCentered: {
-    marginRight: 12, // Décaler légèrement vers la gauche pour centrer
-  },
   noteActions: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -1159,18 +1126,6 @@ const createStyles = (theme: any) => StyleSheet.create({
     marginTop: 32,
     marginBottom: 16,
     textAlign: 'center',
-  },
-  emptySubtitle: {
-    fontSize: 17,
-    fontFamily: 'Inter-Regular',
-    color: theme.colors.textSecondary,
-    textAlign: 'center',
-    marginBottom: 40,
-    lineHeight: 26,
-  },
-  createButton: {
-    paddingHorizontal: 40,
-    paddingVertical: 16,
   },
   // Styles pour le modal
   modalContent: {

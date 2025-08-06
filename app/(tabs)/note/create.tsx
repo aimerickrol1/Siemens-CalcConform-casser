@@ -10,8 +10,6 @@ import { useStorage } from '@/contexts/StorageContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 
-type NotePriority = 'none' | 'low' | 'medium' | 'high';
-
 export default function CreateNoteScreen() {
   const { strings } = useLanguage();
   const { theme } = useTheme();
@@ -20,7 +18,6 @@ export default function CreateNoteScreen() {
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
   const [tags, setTags] = useState('');
-  const [priority, setPriority] = useState<NotePriority>('none');
   const [content, setContent] = useState('');
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -82,7 +79,6 @@ export default function CreateNoteScreen() {
         description: description.trim() || undefined,
         location: location.trim() || undefined,
         tags: tags.trim() || undefined,
-        priority: priority,
         content: content.trim(),
         images: images.length > 0 ? images : undefined,
       });
@@ -176,32 +172,6 @@ export default function CreateNoteScreen() {
     target.value = '';
   };
 
-  const getPriorityColor = (priority: NotePriority) => {
-    switch (priority) {
-      case 'low':
-        return '#10B981';
-      case 'medium':
-        return '#F59E0B';
-      case 'high':
-        return '#EF4444';
-      default:
-        return theme.colors.border;
-    }
-  };
-
-  const getPriorityLabel = (priority: NotePriority) => {
-    switch (priority) {
-      case 'low':
-        return 'Faible';
-      case 'medium':
-        return 'Moyenne';
-      case 'high':
-        return 'Forte';
-      default:
-        return 'Aucune';
-    }
-  };
-
   const handleRemoveImage = (index: number) => {
     setImages(prev => prev.filter((_, i) => i !== index));
   };
@@ -229,32 +199,6 @@ export default function CreateNoteScreen() {
           <Input
             label="Titre de la note"
             value={title}
-            onChangeText={setTitle}
-            placeholder="Titre de la note"
-            error={errors.title}
-          />
-
-          <Input
-            label="Description"
-            value={description}
-            onChangeText={setDescription}
-            placeholder="Description de la note"
-          />
-
-          <Input
-            label="Lieu"
-            value={location}
-            onChangeText={setLocation}
-            placeholder="Ex: Chantier Rivoli, Bureau, Site client"
-          />
-
-          <Input
-            label="Mots-clés"
-            value={tags}
-            onChangeText={setTags}
-            placeholder="Ex: urgent, mesures, problème, solution"
-          />
-
           {/* Galerie d'images */}
           <NoteImageGallery 
             images={images}
@@ -424,54 +368,5 @@ const createStyles = (theme: any) => StyleSheet.create({
   },
   footerButton: {
     width: '100%',
-  },
-  priorityContainer: {
-    marginBottom: 16,
-  },
-  priorityLabel: {
-    fontSize: 14,
-    fontFamily: 'Inter-Medium',
-    color: theme.colors.textSecondary,
-    marginBottom: 8,
-  },
-  priorityOptions: {
-    flexDirection: 'row',
-    gap: 8,
-    flexWrap: 'wrap',
-  },
-  priorityOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    borderWidth: 2,
-    backgroundColor: theme.colors.surfaceSecondary,
-    flex: 1,
-    minWidth: 0,
-    justifyContent: 'center',
-  },
-  priorityOptionSelected: {
-    backgroundColor: theme.colors.surface,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  priorityDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-  },
-  priorityOptionText: {
-    fontSize: 12,
-    fontFamily: 'Inter-Medium',
-    color: theme.colors.textSecondary,
-  },
-  priorityOptionTextSelected: {
-    fontFamily: 'Inter-SemiBold',
-    color: theme.colors.text,
   },
 });

@@ -389,6 +389,7 @@ export default function EditNoteScreen() {
           </View>
         </View>
 
+
     </View>
   );
 }

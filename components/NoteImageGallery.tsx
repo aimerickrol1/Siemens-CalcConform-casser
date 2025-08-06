@@ -10,9 +10,10 @@ interface NoteImageGalleryProps {
   onRemoveImage: (index: number) => void;
   editable?: boolean;
   noteId?: string;
+  isEditMode?: boolean;
 }
 
-export function NoteImageGallery({ images, onRemoveImage, editable = false, noteId }: NoteImageGalleryProps) {
+export function NoteImageGallery({ images, onRemoveImage, editable = false, noteId, isEditMode = false }: NoteImageGalleryProps) {
   const { theme } = useTheme();
   const { showModal, hideModal } = useModal();
 
@@ -32,7 +33,7 @@ export function NoteImageGallery({ images, onRemoveImage, editable = false, note
 
   const handleImagePress = (index: number) => {
     try {
-      console.log('🖼️ Ouverture image - noteId:', noteId, 'editable:', editable);
+      console.log('🖼️ Ouverture image - noteId:', noteId, 'editable:', editable, 'isEditMode:', isEditMode);
       
       // Encoder toutes les images pour les passer en paramètre
       const allImagesParam = encodeURIComponent(JSON.stringify(images));
@@ -46,8 +47,8 @@ export function NoteImageGallery({ images, onRemoveImage, editable = false, note
       
       if (noteId) {
         params.noteId = noteId;
-        // Si on a un noteId, on retourne toujours vers le détail
-        params.returnTo = 'detail';
+        // Si on est en mode édition, retourner vers l'édition, sinon vers le détail
+        params.returnTo = isEditMode ? 'edit' : 'detail';
       } else {
         // Si pas de noteId, on est en création
         params.returnTo = 'create';

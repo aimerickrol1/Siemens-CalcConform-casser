@@ -275,6 +275,7 @@ export default function EditNoteScreen() {
             onRemoveImage={handleRemoveImage}
             editable={true}
             noteId={note.id}
+            isEditMode={true}
           />
 
           {/* Bouton ajouter image */}

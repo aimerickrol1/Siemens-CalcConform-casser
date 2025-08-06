@@ -211,7 +211,6 @@ export default function CreateNoteScreen() {
             label={strings.noteTitle}
             value={title}
             onChangeText={setTitle}
-            placeholder="Ex: Observations chantier, Mesures particulières..."
             error={errors.title}
           />
 
@@ -219,21 +218,18 @@ export default function CreateNoteScreen() {
             label={strings.description}
             value={description}
             onChangeText={setDescription}
-            placeholder="Ex: Notes importantes du jour, Points à retenir..."
           />
 
           <Input
             label="Lieu"
             value={location}
             onChangeText={setLocation}
-            placeholder="Ex: Bâtiment A - Étage 2, Zone technique..."
           />
 
           <Input
             label="Mots-clés"
             value={tags}
             onChangeText={setTags}
-            placeholder="Ex: urgent, mesures, conformité, vérification..."
           />
 
           {/* Sélecteur de priorité */}

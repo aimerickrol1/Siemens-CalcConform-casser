@@ -249,28 +249,24 @@ export default function EditNoteScreen() {
             value={title}
             onChangeText={setTitle}
             error={errors.title}
-            placeholder="Ex: Observations chantier, Mesures particulières..."
           />
 
           <Input
             label="Description"
             value={description}
             onChangeText={setDescription}
-            placeholder="Ex: Notes importantes du jour, Points à retenir..."
           />
 
           <Input
             label="Lieu"
             value={location}
             onChangeText={setLocation}
-            placeholder="Ex: Bâtiment A - Étage 2, Zone technique..."
           />
 
           <Input
             label="Mots-clés"
             value={tags}
             onChangeText={setTags}
-            placeholder="Ex: urgent, mesures, conformité, vérification..."
           />
 
           {/* Galerie d'images */}

@@ -340,6 +340,7 @@ export default function CreateNoteScreen() {
         </View>
 
 
+
     </View>
   );
 }

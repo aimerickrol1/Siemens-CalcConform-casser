@@ -211,7 +211,7 @@ export default function CreateNoteScreen() {
             label={strings.noteTitle}
             value={title}
             onChangeText={setTitle}
-            placeholder="Entrez le titre de votre note"
+            placeholder="Entrez le titre de votre note (optionnel)"
             error={errors.title}
           />
 

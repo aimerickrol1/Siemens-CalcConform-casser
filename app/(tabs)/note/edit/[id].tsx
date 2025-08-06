@@ -255,6 +255,7 @@ export default function EditNoteScreen() {
             label="Description"
             value={description}
             onChangeText={setDescription}
+            placeholder="Description courte (optionnel)"
             multiline
           />
 
@@ -262,12 +263,14 @@ export default function EditNoteScreen() {
             label="Lieu"
             value={location}
             onChangeText={setLocation}
+            placeholder="Où avez-vous pris cette note ? (optionnel)"
           />
 
           <Input
             label="Mots-clés"
             value={tags}
             onChangeText={setTags}
+            placeholder="Mots-clés séparés par des virgules (optionnel)"
           />
 
           {/* Galerie d'images */}

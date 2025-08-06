@@ -47,6 +47,8 @@ export default function ImageViewerScreen() {
     } else if (noteId) {
       if (returnTo === 'edit') {
         router.push(`/(tabs)/note/edit/${noteId}`);
+      } else if (returnTo === 'detail') {
+        router.push(`/(tabs)/note/${noteId}`);
       } else {
         router.push(`/(tabs)/note/${noteId}`);
       }

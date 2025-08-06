@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Camera } from 'lucide-react-native';
+import { Camera, AlertCircle } from 'lucide-react-native';
 import { Header } from '@/components/Header';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
@@ -11,6 +11,8 @@ import { useStorage } from '@/contexts/StorageContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAndroidBackButton } from '@/utils/BackHandler';
+
+type NotePriority = 'none' | 'low' | 'medium' | 'high';
 
 export default function EditNoteScreen() {
   const { strings } = useLanguage();
@@ -22,6 +24,7 @@ export default function EditNoteScreen() {
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
   const [tags, setTags] = useState('');
+  const [priority, setPriority] = useState<NotePriority>('none');
   const [content, setContent] = useState('');
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -50,6 +53,7 @@ export default function EditNoteScreen() {
         setDescription(foundNote.description || '');
         setLocation(foundNote.location || '');
         setTags(foundNote.tags || '');
+        setPriority(foundNote.priority || 'none');
         setContent(foundNote.content);
         setImages(foundNote.images || []);
       } else {
@@ -114,6 +118,7 @@ export default function EditNoteScreen() {
         description: description.trim() || undefined,
         location: location.trim() || undefined,
         tags: tags.trim() || undefined,
+        priority: priority,
         content: content.trim(),
         images: images.length > 0 ? images : undefined,
       });
@@ -199,6 +204,32 @@ export default function EditNoteScreen() {
 
   const handleRemoveImage = (index: number) => {
     setImages(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const getPriorityColor = (priority: NotePriority) => {
+    switch (priority) {
+      case 'low':
+        return '#10B981';
+      case 'medium':
+        return '#F59E0B';
+      case 'high':
+        return '#EF4444';
+      default:
+        return theme.colors.border;
+    }
+  };
+
+  const getPriorityLabel = (priority: NotePriority) => {
+    switch (priority) {
+      case 'low':
+        return 'Faible';
+      case 'medium':
+        return 'Moyenne';
+      case 'high':
+        return 'Forte';
+      default:
+        return 'Aucune';
+    }
   };
 
   const styles = createStyles(theme);
@@ -332,6 +363,32 @@ export default function EditNoteScreen() {
           style={styles.footerButton}
         />
       </View>
+        {/* Sélecteur de priorité */}
+        <View style={styles.priorityContainer}>
+          <Text style={styles.priorityLabel}>Priorité</Text>
+          <View style={styles.priorityOptions}>
+            {(['none', 'low', 'medium', 'high'] as NotePriority[]).map((priorityOption) => (
+              <TouchableOpacity
+                key={priorityOption}
+                style={[
+                  styles.priorityOption,
+                  priority === priorityOption && styles.priorityOptionSelected,
+                  { borderColor: getPriorityColor(priorityOption) }
+                ]}
+                onPress={() => setPriority(priorityOption)}
+              >
+                <View style={[styles.priorityDot, { backgroundColor: getPriorityColor(priorityOption) }]} />
+                <Text style={[
+                  styles.priorityOptionText,
+                  priority === priorityOption && styles.priorityOptionTextSelected
+                ]}>
+                  {getPriorityLabel(priorityOption)}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+
     </View>
   );
 }
@@ -437,5 +494,54 @@ const createStyles = (theme: any) => StyleSheet.create({
   },
   footerButton: {
     width: '100%',
+  },
+  priorityContainer: {
+    marginBottom: 16,
+  },
+  priorityLabel: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: theme.colors.textSecondary,
+    marginBottom: 8,
+  },
+  priorityOptions: {
+    flexDirection: 'row',
+    gap: 8,
+    flexWrap: 'wrap',
+  },
+  priorityOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 20,
+    borderWidth: 2,
+    backgroundColor: theme.colors.surfaceSecondary,
+    flex: 1,
+    minWidth: 0,
+    justifyContent: 'center',
+  },
+  priorityOptionSelected: {
+    backgroundColor: theme.colors.surface,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  priorityDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  priorityOptionText: {
+    fontSize: 12,
+    fontFamily: 'Inter-Medium',
+    color: theme.colors.textSecondary,
+  },
+  priorityOptionTextSelected: {
+    fontFamily: 'Inter-SemiBold',
+    color: theme.colors.text,
   },
 });

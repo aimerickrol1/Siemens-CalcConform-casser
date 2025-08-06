@@ -56,6 +56,7 @@ export interface Note {
   description?: string;
   location?: string;
   tags?: string;
+  priority?: 'none' | 'low' | 'medium' | 'high';
   content: string;
   createdAt: Date;
   updatedAt: Date;

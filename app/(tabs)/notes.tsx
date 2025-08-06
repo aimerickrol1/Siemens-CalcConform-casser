@@ -13,6 +13,7 @@ import { AnimatedCard } from '@/components/AnimatedCard';
 
 type SortOption = 'newest' | 'oldest' | 'title' | 'updated';
 type FilterOption = 'all' | 'with-images' | 'text-only';
+type NotePriority = 'none' | 'low' | 'medium' | 'high';
 
 // Composant séparé pour chaque note
 function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, isSelected, isFavorite, selectionMode, onLongPress, theme, strings }: {
@@ -52,6 +53,23 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
     return content.length > 120 ? content.substring(0, 120) + '...' : content;
   };
 
+  const getPriorityColor = (priority: NotePriority) => {
+    switch (priority) {
+      case 'low':
+        return '#10B981';
+      case 'medium':
+        return '#F59E0B';
+      case 'high':
+        return '#EF4444';
+      default:
+        return 'transparent';
+    }
+  };
+
+  const getPriorityBorderWidth = (priority: NotePriority) => {
+    return priority === 'none' ? 1 : 2;
+  };
+
   const styles = createStyles(theme);
 
   return (
@@ -61,6 +79,10 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
           styles.noteCard,
           isSelected && styles.selectedCard,
           isFavorite && styles.favoriteCard
+          {
+            borderColor: getPriorityColor(item.priority || 'none'),
+            borderWidth: getPriorityBorderWidth(item.priority || 'none')
+          }
         ]}
         onPress={onPress}
         onLongPress={onLongPress}
@@ -86,6 +108,14 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
                 <Text style={styles.noteTitle} numberOfLines={1}>
                   {item.title || strings.untitledNote}
                 </Text>
+                {item.priority && item.priority !== 'none' && (
+                  <View style={[styles.priorityBadge, { backgroundColor: getPriorityColor(item.priority) }]}>
+                    <Text style={styles.priorityBadgeText}>
+                      {item.priority === 'low' ? 'Faible' : 
+                       item.priority === 'medium' ? 'Moyenne' : 'Forte'}
+                    </Text>
+                  </View>
+                )}
                 {item.images && item.images.length > 0 && (
                   <Text style={styles.photoIndicator}>
                     {item.images.length} photo{item.images.length > 1 ? 's' : ''}
@@ -946,6 +976,8 @@ const createStyles = (theme: any) => StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 3,
     elevation: 2,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
   },
   selectedCard: {
     borderWidth: 2,
@@ -993,6 +1025,18 @@ const createStyles = (theme: any) => StyleSheet.create({
     color: theme.colors.text,
     flex: 1,
     minWidth: 0,
+  },
+  priorityBadge: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 8,
+    marginRight: 8,
+  },
+  priorityBadgeText: {
+    fontSize: 10,
+    fontFamily: 'Inter-Bold',
+    color: '#FFFFFF',
+    textTransform: 'uppercase',
   },
   noteDate: {
     fontSize: 13,

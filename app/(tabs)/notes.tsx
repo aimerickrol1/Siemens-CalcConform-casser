@@ -1223,4 +1223,7 @@ const createStyles = (theme: any) => StyleSheet.create({
     fontFamily: 'Inter-SemiBold',
     color: theme.colors.primary,
   },
+  actionButton: {
+    padding: 8,
+  },
 });

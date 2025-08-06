@@ -181,7 +181,7 @@ export default function CreateNoteScreen() {
     switch (priority) {
       case 'high': return '#FF4444';
       case 'medium': return '#FF8800';
-      case 'low': return '#00AA00';
+      case 'low': return '#00AA44';
       default: return theme.colors.textTertiary;
     }
   };

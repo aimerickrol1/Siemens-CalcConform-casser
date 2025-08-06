@@ -114,6 +114,12 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
                 </TouchableOpacity>
                 <TouchableOpacity 
                   style={styles.actionButton}
+                  onPress={() => onEdit(item)}
+                >
+                  <Settings size={16} color={theme.colors.primary} />
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={styles.actionButton}
                   onPress={() => onDelete(item)}
                 >
                   <Trash2 size={16} color={theme.colors.error} />
@@ -160,21 +166,6 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
           </View>
         )}
 
-        {/* Bouton de modification en bas de la carte */}
-        {!selectionMode && (
-          <View style={styles.editButtonContainer}>
-            <TouchableOpacity 
-              style={styles.editButton}
-              onPress={() => {
-                console.log('✏️ Navigation vers édition note:', item.id);
-                safeNavigate(`/(tabs)/note/edit/${item.id}`);
-              }}
-            >
-              <Settings size={14} color={theme.colors.primary} />
-              <Text style={styles.editButtonText}>Modification</Text>
-            </TouchableOpacity>
-          </View>
-        )}
       </TouchableOpacity>
     </View>
   );
@@ -271,11 +262,8 @@ export default function NotesScreen() {
   };
 
   const handleEditNote = (note: Note) => {
-    showModal(<EditNoteTitleModal 
-      note={note}
-      onCancel={() => hideModal()}
-      strings={strings}
-    />);
+    console.log('✏️ Navigation vers édition note:', note.id);
+    safeNavigate(`/(tabs)/note/edit/${note.id}`);
   };
 
   const handleDeleteNote = (note: Note) => {
@@ -1140,37 +1128,17 @@ const createStyles = (theme: any) => StyleSheet.create({
     marginBottom: 16,
     textAlign: 'center',
   },
-  // Styles pour le modal
-  modalContent: {
-    backgroundColor: theme.colors.surface,
-    borderRadius: 16,
-    padding: 20,
-    width: '100%',
-    maxWidth: 400,
-    maxHeight: '70%',
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontFamily: 'Inter-SemiBold',
-    color: theme.colors.text,
-    flex: 1,
-  },
-  closeButton: {
-    padding: 4,
-  },
-  modalBody: {
-    marginBottom: 20,
-  },
-  modalText: {
-    fontSize: 14,
+  emptySubtitle: {
+    fontSize: 16,
     fontFamily: 'Inter-Regular',
     color: theme.colors.textSecondary,
+    textAlign: 'center',
+    marginBottom: 32,
+    lineHeight: 24,
+  },
+  createButton: {
+    paddingHorizontal: 32,
+  },
     lineHeight: 20,
     marginBottom: 8,
   },

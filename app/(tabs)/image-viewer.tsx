@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Image, StyleSheet, TouchableOpacity, Text, Platform } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react-native';

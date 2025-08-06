@@ -1171,7 +1171,6 @@ const createStyles = (theme: any) => StyleSheet.create({
     color: theme.colors.textSecondary,
     lineHeight: 20,
   },
-  },
   modalBold: {
     fontFamily: 'Inter-SemiBold',
     color: theme.colors.text,

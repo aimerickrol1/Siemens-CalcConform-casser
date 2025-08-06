@@ -150,31 +150,6 @@ export default function CreateNoteScreen() {
         console.log('📸 Image sélectionnée:', file.name, 'Taille:', file.size, 'Type:', file.type);
         
         // Compresser l'image pour le stockage
-        const compressedBase64 = await compressImage(file);
-        console.log('💾 Image compressée pour stockage, taille:', compressedBase64.length);
-        
-        // Ajouter l'image compressée
-        setImages(prev => [...prev, compressedBase64]);
-      } catch (error) {
-        console.error('Erreur lors de la compression de l\'image:', error);
-        // Fallback sans compression
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const base64 = e.target?.result as string;
-          console.log('📄 Fallback Base64 créé:', base64.substring(0, 30));
-          setImages(prev => [...prev, base64]);
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-    
-    // Reset input
-    target.value = '';
-  };
-
-  const handleRemoveImage = (index: number) => {
-    setImages(prev => prev.filter((_, i) => i !== index));
-  };
 
   const styles = createStyles(theme);
 

@@ -208,9 +208,7 @@ export default function CreateNoteScreen() {
             label="Description"
             value={description}
             onChangeText={setDescription}
-            placeholder="Brève description de la note"
-            multiline
-            numberOfLines={2}
+            placeholder="Description de la note"
           />
 
           <Input

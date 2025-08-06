@@ -251,14 +251,12 @@ export default function CreateNoteScreen() {
             </View>
           </View>
 
-          {/* Galerie d'images */}
           <NoteImageGallery 
             images={images}
             onRemoveImage={handleRemoveImage}
             editable={true}
           />
 
-          {/* Bouton ajouter image */}
           <View style={styles.imageButtonContainer}>
             <TouchableOpacity
               style={styles.addPhotoButton}
@@ -269,7 +267,6 @@ export default function CreateNoteScreen() {
             </TouchableOpacity>
           </View>
 
-          {/* Contenu de la note */}
           <Text style={styles.contentLabel}>{strings.noteContent}</Text>
           <TextInput
             style={styles.contentTextInput}
@@ -286,7 +283,6 @@ export default function CreateNoteScreen() {
             blurOnSubmit={false}
           />
 
-          {/* Input caché pour web */}
           {Platform.OS === 'web' && (
             <input
               ref={fileInputRef}
@@ -300,7 +296,6 @@ export default function CreateNoteScreen() {
         </ScrollView>
       </KeyboardAvoidingView>
 
-      {/* Bouton fixe en bas du viewport */}
       <View style={styles.fixedFooter}>
         <Button
           title={loading ? "Création..." : strings.createNote}

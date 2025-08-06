@@ -245,27 +245,27 @@ export default function EditNoteScreen() {
           showsVerticalScrollIndicator={false}
         >
           <Input
-            label={strings.noteTitle}
+            label="Titre de la note"
             value={title}
             onChangeText={setTitle}
             error={errors.title}
           />
 
           <Input
-            label={strings.description}
+            label="Description"
             value={description}
             onChangeText={setDescription}
             multiline
           />
 
           <Input
-            label={strings.location}
+            label="Lieu"
             value={location}
             onChangeText={setLocation}
           />
 
           <Input
-            label={strings.tags}
+            label="Mots-clés"
             value={tags}
             onChangeText={setTags}
           />

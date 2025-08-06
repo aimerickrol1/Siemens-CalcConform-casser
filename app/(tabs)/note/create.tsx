@@ -216,7 +216,7 @@ export default function CreateNoteScreen() {
           showsVerticalScrollIndicator={false}
         >
           <Input
-            label="Titre de la note"
+            label={strings.noteTitle}
             value={title}
             onChangeText={setTitle}
             placeholder="Entrez le titre de votre note"
@@ -224,7 +224,7 @@ export default function CreateNoteScreen() {
           />
 
           <Input
-            label="Description"
+            label={strings.description}
             value={description}
             onChangeText={setDescription}
             placeholder="Description courte (optionnel)"
@@ -238,7 +238,7 @@ export default function CreateNoteScreen() {
           />
 
           <Input
-            label="Tags"
+            label="Mots-clés"
             value={tags}
             onChangeText={setTags}
             placeholder="Mots-clés séparés par des virgules (optionnel)"

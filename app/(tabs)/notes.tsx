@@ -125,9 +125,8 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
         {item.description && (
           <View style={styles.descriptionRow}>
             <View style={styles.descriptionContainer}>
-              <Text style={styles.descriptionIcon}>💭</Text>
               <Text style={styles.noteDescription} numberOfLines={1} ellipsizeMode="tail">
-                {item.description}
+                Description : {item.description}
               </Text>
             </View>
           </View>
@@ -138,14 +137,14 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
             {item.location && (
               <View style={styles.locationBadge}>
                 <Text style={styles.badgeText} numberOfLines={1} ellipsizeMode="tail">
-                  Lieu: {item.location}
+                  Lieu : {item.location}
                 </Text>
               </View>
             )}
             {item.tags && (
               <View style={styles.tagsBadge}>
                 <Text style={styles.badgeText} numberOfLines={1} ellipsizeMode="tail">
-                  Tags: {item.tags}
+                  Mots-clés : {item.tags}
                 </Text>
               </View>
             )}
@@ -157,6 +156,22 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
             <Text style={styles.notePreview} numberOfLines={2}>
               {getPreviewText(item.content)}
             </Text>
+          </View>
+        )}
+
+        {/* Bouton de modification en bas de la carte */}
+        {!selectionMode && (
+          <View style={styles.editButtonContainer}>
+            <TouchableOpacity 
+              style={styles.editButton}
+              onPress={() => {
+                console.log('✏️ Navigation vers édition note:', item.id);
+                safeNavigate(`/(tabs)/note/edit/${item.id}`);
+              }}
+            >
+              <Settings size={14} color={theme.colors.primary} />
+              <Text style={styles.editButtonText}>Modification</Text>
+            </TouchableOpacity>
           </View>
         )}
       </TouchableOpacity>
@@ -1034,6 +1049,10 @@ const createStyles = (theme: any) => StyleSheet.create({
     borderLeftWidth: 3,
     borderLeftColor: theme.colors.primary,
   },
+  descriptionIcon: {
+    fontSize: 12,
+    marginRight: 6,
+  },
   noteDescription: {
     fontSize: 14,
     fontFamily: 'Inter-Medium',
@@ -1182,5 +1201,25 @@ const createStyles = (theme: any) => StyleSheet.create({
     backgroundColor: theme.colors.inputBackground,
     color: theme.colors.text,
     minHeight: 48,
+  },
+  editButtonContainer: {
+    marginTop: 12,
+    alignItems: 'center',
+  },
+  editButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    backgroundColor: theme.colors.primary + '20',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: theme.colors.primary + '40',
+  },
+  editButtonText: {
+    fontSize: 13,
+    fontFamily: 'Inter-SemiBold',
+    color: theme.colors.primary,
   },
 });

@@ -1,0 +1,71 @@
+{
+  "name": "Siemens CalcConform",
+  "short_name": "CalcConform",
+  "description": "Application de calcul de conformité de débit de désenfumage",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#009999",
+  "theme_color": "#009999",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "fr",
+  "categories": ["productivity", "utilities", "business"],
+  "icons": [
+    {
+      "src": "./assets/images/icon1.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/images/icon1.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "./assets/images/icon1.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Calcul rapide",
+      "short_name": "Calcul",
+      "description": "Accès rapide au calculateur de conformité",
+      "url": "/simple",
+      "icons": [
+        {
+          "src": "./assets/images/icon1.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Recherche",
+      "short_name": "Recherche",
+      "description": "Rechercher dans vos volets",
+      "url": "/search",
+      "icons": [
+        {
+          "src": "./assets/images/icon1.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  }
+}

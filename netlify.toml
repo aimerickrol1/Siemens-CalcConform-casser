@@ -1,0 +1,3 @@
+[build]
+  publish = "dist"
+  command = "echo 'Skipping build, using local dist folder'"

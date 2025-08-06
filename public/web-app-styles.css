@@ -1,0 +1,219 @@
+/* Styles CSS spécifiques pour l'application web mobile */
+
+/* Configuration de base pour PWA */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Optimisations pour iOS Safari */
+@supports (-webkit-touch-callout: none) {
+  body {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Styles pour PWA en mode standalone */
+@media all and (display-mode: standalone) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* Masquer la barre d'état sur iOS */
+  .expo-status-bar {
+    display: none;
+  }
+}
+
+/* Optimisations pour les écrans tactiles */
+@media (hover: none) and (pointer: coarse) {
+  /* Améliorer la taille des zones tactiles */
+  button, 
+  [role="button"],
+  .touchable {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Empêcher le zoom sur les inputs */
+  input, 
+  textarea, 
+  select {
+    font-size: 16px !important;
+    transform-origin: left top;
+  }
+}
+
+/* Styles pour les inputs sur mobile web */
+input, textarea {
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+  border-radius: 8px;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Améliorer les performances de scroll */
+.scrollable {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+}
+
+/* Masquer les barres de défilement sur mobile */
+@media screen and (max-width: 768px) {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+}
+
+/* Optimisations pour les animations */
+* {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+}
+
+/* Améliorer les transitions tactiles */
+.touchable-highlight {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  tap-highlight-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Styles pour la navigation en bas */
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background-color: #009999;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* S'assurer qu'aucun élément ne crée de stacking context isolant */
+#root, .expo-root {
+  isolation: auto !important;
+  transform: none !important;
+  will-change: auto !important;
+  contain: none !important;
+}
+
+/* Corriger le padding bottom automatique d'Expo Router qui cache le contenu */
+.r-paddingBottom-1jnzvcq {
+  padding-bottom: 0 !important;
+}
+
+/* S'assurer que les conteneurs principaux n'ont pas de padding bottom excessif */
+.css-view-g5y9jx.r-flex-13awgt0.r-paddingBottom-1jnzvcq {
+  padding-bottom: 0 !important;
+}
+
+/* Empêcher le pull-to-refresh sur iOS */
+body {
+  overscroll-behavior: none;
+  -webkit-overscroll-behavior: none;
+}
+
+/* Optimisations pour les modales */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2147483647;
+  background-color: rgba(0, 0, 0, 0.5);
+  isolation: isolate;
+  contain: layout style paint;
+}
+
+/* Styles pour les notifications Service Worker */
+.sw-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #009999;
+  color: white;
+  padding: 16px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  max-width: 300px;
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from { 
+    transform: translateX(100%); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateX(0); 
+    opacity: 1; 
+  }
+}
+
+/* Indicateur de statut hors ligne */
+.offline-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #F59E0B;
+  color: white;
+  text-align: center;
+  padding: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  z-index: 9999;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+}
+
+.offline-indicator.show {
+  transform: translateY(0);
+}
+
+/* Améliorer la lisibilité sur petits écrans */
+@media screen and (max-width: 375px) {
+  .text-responsive {
+    font-size: 14px;
+  }
+  
+  .title-responsive {
+    font-size: 20px;
+  }
+}
+
+/* Optimisations pour le mode paysage sur mobile */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .header-compact {
+    padding-top: 10px;
+    padding-bottom: 5px;
+  }
+  
+  .logo-compact {
+    height: 20px;
+  }
+}

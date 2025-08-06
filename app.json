@@ -1,0 +1,111 @@
+{
+  "expo": {
+    "name": "Siemens CalcConform",
+    "slug": "siemens-calcconform",
+    "version": "2.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon1.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/icon1.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.siemens.calcconform",
+      "icon": "./assets/images/icon1.png"
+    },
+    "android": {
+      "package": "com.siemens.calcconform",
+      "icon": "./assets/images/icon1.png",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icon1.png",
+        "backgroundColor": "#009999"
+      },
+      "permissions": [
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE"
+      ],
+      "versionCode": 3
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "serviceWorker": {
+        "enabled": true,
+        "source": "./public/sw.js"
+      },
+      "serviceWorker": {
+        "enabled": true,
+        "source": "./public/sw.js"
+      },
+      "build": {
+        "babel": {
+          "include": [
+            "node_modules/react-native-vector-icons"
+          ]
+        }
+      },
+      "favicon": "./assets/images/icon.png",
+      "favicon": "./assets/images/icon1.png",
+      "name": "Siemens CalcConform",
+      "shortName": "CalcConform",
+      "lang": "fr",
+      "scope": "/",
+      "themeColor": "#009999",
+      "backgroundColor": "#ffffff",
+      "display": "standalone",
+      "orientation": "portrait",
+      "startUrl": "/",
+      "preferRelatedApplications": false,
+      "relatedApplications": [],
+      "shortcuts": [
+        {
+          "name": "Calcul rapide",
+          "short_name": "Calcul",
+          "description": "Accès rapide au calculateur de conformité",
+          "url": "/simple",
+          "icons": [
+            {
+              "src": "./assets/images/icon1.png",
+              "sizes": "192x192",
+              "type": "image/png"
+            }
+          ]
+        }
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-web-browser",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#ffffff",
+          "image": "./assets/images/icon.png",
+          "resizeMode": "contain"
+        }
+      ]
+    ],
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "8c402814-c9c3-4e48-831c-471960e934af"
+      }
+    },
+    "owner": "aimerickrol"
+  }
+}

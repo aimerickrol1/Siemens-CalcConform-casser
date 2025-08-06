@@ -42,7 +42,8 @@ export function NoteImageGallery({ images, onRemoveImage, editable = false, note
           imageIndex: (index + 1).toString(),
           totalImages: images.length.toString(),
           allImages: allImagesParam,
-          noteId: noteId || undefined
+          noteId: noteId || undefined,
+          returnTo: editable ? 'edit' : 'detail'
         }
       });
     } catch (error) {

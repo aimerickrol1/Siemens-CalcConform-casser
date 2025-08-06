@@ -5,12 +5,13 @@ import { X, ChevronLeft, ChevronRight } from 'lucide-react-native';
 import { StatusBar } from 'expo-status-bar';
 
 export default function ImageViewerScreen() {
-  const { imageUri, imageIndex, totalImages, allImages, noteId } = useLocalSearchParams<{ 
+  const { imageUri, imageIndex, totalImages, allImages, noteId, returnTo } = useLocalSearchParams<{ 
     imageUri: string; 
     imageIndex?: string; 
     totalImages?: string; 
     allImages?: string;
     noteId?: string;
+    returnTo?: string;
   }>();
 
   // Initialiser l'index à partir du paramètre à chaque rendu
@@ -41,7 +42,11 @@ export default function ImageViewerScreen() {
 
   const handleClose = () => {
     if (noteId) {
-      router.push(`/(tabs)/note/${noteId}`);
+      if (returnTo === 'edit') {
+        router.push(`/(tabs)/note/edit/${noteId}`);
+      } else {
+        router.push(`/(tabs)/note/${noteId}`);
+      }
     } else {
       router.back();
     }

@@ -683,9 +683,8 @@ const createStyles = (theme: any) => StyleSheet.create({
     paddingHorizontal: 8,
     borderRadius: 6,
     backgroundColor: theme.colors.surfaceSecondary,
-    flex: 1,
-    marginRight: 12,
-    minWidth: 0,
+    maxWidth: 200,
+    marginRight: 16,
   },
   titleText: {
     fontSize: 20,

@@ -729,9 +729,9 @@ const createStyles = (theme: any) => StyleSheet.create({
     borderRadius: 16,
     padding: 16,
     width: '100%',
-    maxWidth: 800,
-    maxHeight: Platform.OS === 'web' ? '85%' : '90%', // Hauteur augmentée
-    marginVertical: 40,
+    maxWidth: 400,
+    maxHeight: Platform.OS === 'web' ? '75%' : '80%',
+    marginVertical: 20,
   },
   // Modal des prochaines nouveautés optimisé pour mobile SANS BARRE DE SCROLL
   upcomingFeaturesModalContent: {
@@ -739,9 +739,9 @@ const createStyles = (theme: any) => StyleSheet.create({
     borderRadius: 16,
     padding: 16,
     width: '100%',
-    maxWidth: 800,
-    maxHeight: Platform.OS === 'web' ? '85%' : '90%', // Hauteur augmentée
-    marginVertical: 40,
+    maxWidth: 400,
+    maxHeight: Platform.OS === 'web' ? '75%' : '80%',
+    marginVertical: 20,
   },
   modalHeader: {
     flexDirection: 'row',
@@ -764,21 +764,21 @@ const createStyles = (theme: any) => StyleSheet.create({
   },
   // ScrollView optimisé pour mobile SANS BARRE DE SCROLL
   calculationsScrollView: {
-    maxHeight: 450,
+    maxHeight: 300,
     paddingBottom: 10,
   },
   // Style pour le contenu du scroll des calculs
   calculationsScrollContent: {
-    paddingBottom: 20,
+    paddingBottom: 10,
   },
   // ScrollView optimisé pour mobile SANS BARRE DE SCROLL
   upcomingScrollView: {
-    maxHeight: 500,
+    maxHeight: 350,
     paddingBottom: 10,
   },
   // Style pour le contenu du scroll
   upcomingScrollContent: {
-    paddingBottom: 20,
+    paddingBottom: 10,
   },
   modalText: {
     fontSize: 14,

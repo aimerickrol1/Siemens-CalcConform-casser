@@ -153,8 +153,9 @@ function NoteItem({ item, index, onPress, onEdit, onDelete, onToggleFavorite, is
         )}
 
         {item.content && (
+          <View style={styles.contentPreviewContainer}>
             <Text style={styles.notePreview} numberOfLines={2}>
-              Description: {item.description}
+              {getPreviewText(item.content)}
             </Text>
           </View>
         )}

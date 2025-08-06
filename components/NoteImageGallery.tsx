@@ -35,16 +35,25 @@ export function NoteImageGallery({ images, onRemoveImage, editable = false, note
       // Encoder toutes les images pour les passer en paramètre
       const allImagesParam = encodeURIComponent(JSON.stringify(images));
       
+      const params: any = {
+        imageUri: images[index],
+        imageIndex: (index + 1).toString(),
+        totalImages: images.length.toString(),
+        allImages: allImagesParam,
+      };
+      
+      // Seulement ajouter noteId et returnTo si on a un noteId
+      if (noteId) {
+        params.noteId = noteId;
+        params.returnTo = editable ? 'edit' : 'detail';
+      } else {
+        // Si pas de noteId, on est en création, donc retourner vers la création
+        params.returnTo = 'create';
+      }
+      
       router.push({
         pathname: '/(tabs)/image-viewer',
-        params: {
-          imageUri: images[index],
-          imageIndex: (index + 1).toString(),
-          totalImages: images.length.toString(),
-          allImages: allImagesParam,
-          noteId: noteId || undefined,
-          returnTo: editable ? 'edit' : 'detail'
-        }
+        params
       });
     } catch (error) {
       console.error('Erreur navigation vers visualiseur:', error);

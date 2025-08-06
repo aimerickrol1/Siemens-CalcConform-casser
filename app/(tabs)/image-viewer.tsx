@@ -41,7 +41,10 @@ export default function ImageViewerScreen() {
   };
 
   const handleClose = () => {
-    if (noteId) {
+    if (returnTo === 'create') {
+      // Retourner vers la page de création de note
+      router.push('/(tabs)/note/create');
+    } else if (noteId) {
       if (returnTo === 'edit') {
         router.push(`/(tabs)/note/edit/${noteId}`);
       } else {

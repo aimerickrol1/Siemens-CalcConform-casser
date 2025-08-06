@@ -44,14 +44,12 @@ export default function ImageViewerScreen() {
     if (returnTo === 'create') {
       // Retourner vers la page de création de note
       router.push('/(tabs)/note/create');
+    } else if (returnTo === 'edit' && noteId) {
+      router.push(`/(tabs)/note/edit/${noteId}`);
+    } else if (returnTo === 'detail' && noteId) {
+      router.push(`/(tabs)/note/${noteId}`);
     } else if (noteId) {
-      if (returnTo === 'edit') {
-        router.push(`/(tabs)/note/edit/${noteId}`);
-      } else if (returnTo === 'detail') {
-        router.push(`/(tabs)/note/${noteId}`);
-      } else {
-        router.push(`/(tabs)/note/${noteId}`);
-      }
+      router.push(`/(tabs)/note/${noteId}`);
     } else {
       router.back();
     }

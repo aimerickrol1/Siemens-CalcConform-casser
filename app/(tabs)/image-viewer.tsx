@@ -13,11 +13,19 @@ export default function ImageViewerScreen() {
     noteId?: string;
   }>();
 
-  const [currentIndex, setCurrentIndex] = useState(parseInt(imageIndex || '1') - 1);
+  // Initialiser l'index à partir du paramètre à chaque rendu
+  const initialIndex = parseInt(imageIndex || '1') - 1;
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
   
   // Parse all images from the parameter
   const images = allImages ? JSON.parse(decodeURIComponent(allImages)) : [imageUri];
   const totalCount = images.length;
+
+  // Réinitialiser l'index quand les paramètres changent
+  useEffect(() => {
+    const newIndex = parseInt(imageIndex || '1') - 1;
+    setCurrentIndex(newIndex);
+  }, [imageIndex, imageUri]);
 
   const goToPrevious = () => {
     if (currentIndex > 0) {

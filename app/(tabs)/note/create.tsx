@@ -22,6 +22,7 @@ export default function CreateNoteScreen() {
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{ title?: string }>({});
+  const [priority, setPriority] = useState<NotePriority>('none');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleBack = () => {
@@ -104,6 +105,28 @@ export default function CreateNoteScreen() {
     }
   };
 
+  const handleRemoveImage = (index: number) => {
+    setImages(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const getPriorityColor = (priorityLevel: NotePriority) => {
+    switch (priorityLevel) {
+      case 'high': return '#FF4444';
+      case 'medium': return '#FF8800';
+      case 'low': return '#00AA44';
+      default: return theme.colors.textTertiary;
+    }
+  };
+
+  const getPriorityLabel = (priorityLevel: NotePriority) => {
+    switch (priorityLevel) {
+      case 'high': return 'Haute';
+      case 'medium': return 'Moyenne';
+      case 'low': return 'Basse';
+      default: return 'Aucune';
+    }
+  };
+
   const compressImage = (file: File, maxWidth: number = 800, quality: number = 0.8): Promise<string> => {
     return new Promise((resolve) => {
       const canvas = document.createElement('canvas');
@@ -149,26 +172,19 @@ export default function CreateNoteScreen() {
       try {
         console.log('📸 Image sélectionnée:', file.name, 'Taille:', file.size, 'Type:', file.type);
         
-        setImages(prev => [...prev, compressedBase64]);
+        // Compresser l'image pour le stockage
+        const compressedImage = await compressImage(file);
+        setImages(prev => [...prev, compressedImage]);
+        
+        // Réinitialiser l'input
+        if (target) {
+          target.value = '';
+        }
       } catch (error) {
-        console.error('Erreur lors de la compression de l\'image:', error);
-        // Fallback sans compression
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const base64 = e.target?.result as string;
-          console.log('📄 Fallback Base64 créé:', base64.substring(0, 30));
-          setImages(prev => [...prev, base64]);
-        };
-        reader.readAsDataURL(file);
+        console.error('Erreur lors du traitement de l\'image:', error);
+        Alert.alert('Erreur', 'Impossible de traiter l\'image sélectionnée.');
       }
     }
-    
-    // Reset input
-    target.value = '';
-  };
-
-  const handleRemoveImage = (index: number) => {
-    setImages(prev => prev.filter((_, i) => i !== index));
   };
 
   const styles = createStyles(theme);

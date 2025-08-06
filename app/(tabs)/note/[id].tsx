@@ -683,13 +683,16 @@ const createStyles = (theme: any) => StyleSheet.create({
     paddingHorizontal: 8,
     borderRadius: 6,
     backgroundColor: theme.colors.surfaceSecondary,
-    maxWidth: 250,
+    flex: 1,
+    marginRight: 12,
+    minWidth: 0,
   },
   titleText: {
     fontSize: 20,
     fontFamily: 'Inter-Bold',
     color: theme.colors.text,
     flex: 1,
+    minWidth: 0,
   },
   titleEditIcon: {
     fontSize: 12,

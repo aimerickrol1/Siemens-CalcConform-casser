@@ -1,31 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TextInput } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
+import { Camera } from 'lucide-react-native';
 import { Header } from '@/components/Header';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
-import { ImagePicker } from '@/components/ImagePicker';
 import { NoteImageGallery } from '@/components/NoteImageGallery';
 import { Note } from '@/types';
 import { useStorage } from '@/contexts/StorageContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
-import { useModal } from '@/contexts/ModalContext';
 import { useAndroidBackButton } from '@/utils/BackHandler';
 
 export default function EditNoteScreen() {
   const { strings } = useLanguage();
   const { theme } = useTheme();
-  const { showModal, hideModal } = useModal();
   const { notes, updateNote } = useStorage();
   const { id } = useLocalSearchParams<{ id: string }>();
   const [note, setNote] = useState<Note | null>(null);
   const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [location, setLocation] = useState('');
+  const [tags, setTags] = useState('');
   const [content, setContent] = useState('');
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [errors, setErrors] = useState<{ title?: string }>({});
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Configure Android back button
   useAndroidBackButton(() => {
@@ -45,6 +47,9 @@ export default function EditNoteScreen() {
         console.log('✅ Note trouvée:', foundNote.title);
         setNote(foundNote);
         setTitle(foundNote.title);
+        setDescription(foundNote.description || '');
+        setLocation(foundNote.location || '');
+        setTags(foundNote.tags || '');
         setContent(foundNote.content);
         setImages(foundNote.images || []);
       } else {
@@ -106,7 +111,10 @@ export default function EditNoteScreen() {
       
       const updatedNote = await updateNote(note.id, {
         title: title.trim() || strings.untitledNote,
-        content: note.content, // Garder le contenu existant
+        description: description.trim() || undefined,
+        location: location.trim() || undefined,
+        tags: tags.trim() || undefined,
+        content: content.trim(),
         images: images.length > 0 ? images : undefined,
       });
 
@@ -124,15 +132,69 @@ export default function EditNoteScreen() {
   };
 
   const handleAddImage = () => {
-    showModal(
-      <ImagePicker 
-        onImageSelected={(imageBase64) => {
-          console.log('📝 Image ajoutée à la note (édition), format:', imageBase64.substring(0, 30));
-          setImages(prev => [...prev, imageBase64]);
-        }}
-        onClose={hideModal}
-      />
-    );
+    if (Platform.OS === 'web' && fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const compressImage = (file: File, maxWidth: number = 800, quality: number = 0.8): Promise<string> => {
+    return new Promise((resolve) => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+
+      img.onload = () => {
+        const maxDimension = Math.max(img.width, img.height);
+        const targetMaxDimension = Math.min(maxDimension, 1920);
+        
+        const ratio = targetMaxDimension / maxDimension;
+        const newWidth = Math.round(img.width * ratio);
+        const newHeight = Math.round(img.height * ratio);
+
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+
+        if (ctx) {
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+        }
+
+        ctx?.drawImage(img, 0, 0, newWidth, newHeight);
+
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.92);
+        console.log('Image compressée, format:', compressedBase64.substring(0, 30));
+        resolve(compressedBase64);
+      };
+
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
+  const handleFileSelect = async (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+    
+    if (file && file.type.startsWith('image/')) {
+      try {
+        console.log('📸 Image sélectionnée:', file.name, 'Taille:', file.size, 'Type:', file.type);
+        
+        const compressedBase64 = await compressImage(file);
+        console.log('💾 Image compressée pour stockage, taille:', compressedBase64.length);
+        
+        setImages(prev => [...prev, compressedBase64]);
+      } catch (error) {
+        console.error('Erreur lors de la compression de l\'image:', error);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const base64 = e.target?.result as string;
+          console.log('📄 Fallback Base64 créé:', base64.substring(0, 30));
+          setImages(prev => [...prev, base64]);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+    
+    target.value = '';
   };
 
   const handleRemoveImage = (index: number) => {
@@ -186,9 +248,77 @@ export default function EditNoteScreen() {
             label={strings.noteTitle}
             value={title}
             onChangeText={setTitle}
-            placeholder="Ex: Observations chantier, Mesures particulières..."
+            placeholder="Titre de la note"
             error={errors.title}
           />
+
+          <Input
+            label="Description"
+            value={description}
+            onChangeText={setDescription}
+            placeholder="Description de la note"
+          />
+
+          <Input
+            label="Lieu"
+            value={location}
+            onChangeText={setLocation}
+            placeholder="Ex: Chantier Rivoli, Bureau, Site client"
+          />
+
+          <Input
+            label="Mots-clés"
+            value={tags}
+            onChangeText={setTags}
+            placeholder="Ex: urgent, mesures, problème, solution"
+          />
+
+          {/* Galerie d'images */}
+          <NoteImageGallery 
+            images={images}
+            onRemoveImage={handleRemoveImage}
+            editable={true}
+            noteId={note.id}
+          />
+
+          {/* Bouton ajouter image */}
+          <View style={styles.imageButtonContainer}>
+            <TouchableOpacity
+              style={styles.addPhotoButton}
+              onPress={handleAddImage}
+            >
+              <Camera size={16} color={theme.colors.primary} />
+              <Text style={styles.addPhotoText}>Ajouter une photo</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Contenu de la note */}
+          <Text style={styles.contentLabel}>{strings.noteContent}</Text>
+          <TextInput
+            style={styles.contentTextInput}
+            value={content}
+            onChangeText={setContent}
+            placeholder={strings.writeYourNote}
+            placeholderTextColor={theme.colors.textTertiary}
+            multiline={true}
+            textAlignVertical="top"
+            scrollEnabled={true}
+            autoCorrect={true}
+            spellCheck={true}
+            returnKeyType="default"
+            blurOnSubmit={false}
+          />
+
+          {/* Input caché pour web */}
+          {Platform.OS === 'web' && (
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={(e) => handleFileSelect(e as any)}
+            />
+          )}
 
         </ScrollView>
       </KeyboardAvoidingView>
@@ -243,24 +373,51 @@ const createStyles = (theme: any) => StyleSheet.create({
     color: theme.colors.textSecondary,
     textAlign: 'center',
   },
-  contentInputContainer: {
-    flex: 1,
-    minHeight: 300,
-  },
-  contentInput: {
-    minHeight: 300,
-    textAlignVertical: 'top',
-  },
-  infoText: {
-    fontSize: 14,
-    fontFamily: 'Inter-Regular',
-    color: theme.colors.textSecondary,
-    textAlign: 'center',
-    fontStyle: 'italic',
+  imageButtonContainer: {
     marginTop: 16,
-    padding: 16,
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  addPhotoButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    height: 36,
     backgroundColor: theme.colors.surfaceSecondary,
     borderRadius: 8,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+  },
+  addPhotoText: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: theme.colors.primary,
+  },
+  contentLabel: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: theme.colors.textSecondary,
+    marginBottom: 12,
+    marginTop: 16,
+  },
+  contentTextInput: {
+    fontSize: 16,
+    fontFamily: 'Inter-Regular',
+    color: theme.colors.text,
+    lineHeight: 24,
+    minHeight: 200,
+    padding: 0,
+    margin: 0,
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+    textAlignVertical: 'top',
+    ...(Platform.OS === 'web' && {
+      outlineWidth: 0,
+      resize: 'none',
+      fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
+    }),
   },
   fixedFooter: {
     position: Platform.OS === 'web' ? 'fixed' : 'absolute',

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform, TextInput } from 'react-native';
 import { useLocalSearchParams, router, useFocusEffect } from 'expo-router';
-import { CreditCard as Edit3, Trash2, Calendar, X, Check, Camera } from 'lucide-react-native';
+import { CreditCard as Edit3, Trash2, Calendar, X, Check, Camera, Settings } from 'lucide-react-native';
 import { Header } from '@/components/Header';
 import { Button } from '@/components/Button';
 import { InlineNoteEditor } from '@/components/InlineNoteEditor';
@@ -95,6 +95,9 @@ export default function NoteDetailScreen() {
     />);
   };
 
+  const handleEditNote = () => {
+    safeNavigate(`/(tabs)/note/edit/${note.id}`);
+  };
   const handleDelete = () => {
     if (!note) return;
 
@@ -317,6 +320,9 @@ export default function NoteDetailScreen() {
         onBack={handleBack}
         rightComponent={
           <View style={styles.headerActions}>
+            <TouchableOpacity onPress={handleEditNote} style={styles.actionButton}>
+              <Settings size={20} color={theme.colors.primary} />
+            </TouchableOpacity>
             <TouchableOpacity onPress={handleAddImage} style={styles.actionButton}>
               <Camera size={20} color={theme.colors.primary} />
             </TouchableOpacity>

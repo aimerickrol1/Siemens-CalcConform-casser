@@ -32,6 +32,8 @@ export function NoteImageGallery({ images, onRemoveImage, editable = false, note
 
   const handleImagePress = (index: number) => {
     try {
+      console.log('🖼️ Ouverture image - noteId:', noteId, 'editable:', editable);
+      
       // Encoder toutes les images pour les passer en paramètre
       const allImagesParam = encodeURIComponent(JSON.stringify(images));
       
@@ -42,14 +44,16 @@ export function NoteImageGallery({ images, onRemoveImage, editable = false, note
         allImages: allImagesParam,
       };
       
-      // Seulement ajouter noteId et returnTo si on a un noteId
       if (noteId) {
         params.noteId = noteId;
-        params.returnTo = editable ? 'edit' : 'detail';
+        // Si on a un noteId, on retourne toujours vers le détail
+        params.returnTo = 'detail';
       } else {
-        // Si pas de noteId, on est en création, donc retourner vers la création
+        // Si pas de noteId, on est en création
         params.returnTo = 'create';
       }
+      
+      console.log('📱 Navigation vers visualiseur avec params:', params);
       
       router.push({
         pathname: '/(tabs)/image-viewer',

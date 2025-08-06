@@ -41,17 +41,31 @@ export default function ImageViewerScreen() {
   };
 
   const handleClose = () => {
-    if (returnTo === 'create') {
-      // Retourner vers la page de création de note
-      router.push('/(tabs)/note/create');
-    } else if (returnTo === 'edit' && noteId) {
-      router.push(`/(tabs)/note/edit/${noteId}`);
-    } else if (returnTo === 'detail' && noteId) {
-      router.push(`/(tabs)/note/${noteId}`);
-    } else if (noteId) {
-      router.push(`/(tabs)/note/${noteId}`);
-    } else {
-      router.back();
+    try {
+      console.log('🔙 Fermeture visualiseur - returnTo:', returnTo, 'noteId:', noteId);
+      
+      // Logique simplifiée et claire
+      if (returnTo === 'create') {
+        console.log('📝 Retour vers création de note');
+        router.replace('/(tabs)/note/create');
+      } else if (returnTo === 'edit' && noteId) {
+        console.log('✏️ Retour vers édition de note:', noteId);
+        router.replace(`/(tabs)/note/edit/${noteId}`);
+      } else if (noteId) {
+        console.log('📖 Retour vers détail de note:', noteId);
+        router.replace(`/(tabs)/note/${noteId}`);
+      } else {
+        console.log('🔙 Retour simple');
+        router.back();
+      }
+    } catch (error) {
+      console.error('❌ Erreur navigation visualiseur:', error);
+      // Fallback sécurisé
+      if (noteId) {
+        router.replace(`/(tabs)/note/${noteId}`);
+      } else {
+        router.replace('/(tabs)/notes');
+      }
     }
   };
 

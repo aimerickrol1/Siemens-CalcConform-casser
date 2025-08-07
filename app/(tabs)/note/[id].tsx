@@ -177,6 +177,33 @@ export default function NoteDetailScreen() {
     }
   };
 
+  const handleImageSelected = async (imageBase64: string) => {
+    if (!note) return;
+    
+    try {
+      console.log('📸 Ajout d\'image à la note:', note.id);
+      const currentImages = note.images || [];
+      
+      // Vérifier la limite d'images
+      if (currentImages.length >= 3) {
+        Alert.alert('Limite atteinte', 'Vous ne pouvez ajouter que 3 images maximum par note.');
+        return;
+      }
+      
+      const updatedNote = await updateNote(note.id, {
+        images: [...currentImages, imageBase64],
+      });
+      
+      if (updatedNote) {
+        setNote(updatedNote);
+        console.log('✅ Image ajoutée avec succès à la note');
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout de l\'image:', error);
+      Alert.alert('Erreur', 'Impossible d\'ajouter l\'image. Essayez avec une image plus petite.');
+    }
+  };
+
   const compressImage = (file: File, maxWidth: number = 800, quality: number = 0.8): Promise<string> => {
     return new Promise((resolve) => {
       const canvas = document.createElement('canvas');
@@ -184,9 +211,9 @@ export default function NoteDetailScreen() {
       const img = new Image();
 
       img.onload = () => {
-        // Améliorer la qualité : augmenter la résolution maximale
+        // Optimiser pour mobile : réduire la résolution maximale
         const maxDimension = Math.max(img.width, img.height);
-        const targetMaxDimension = Math.min(maxDimension, 1920); // Augmenté de 800 à 1920
+        const targetMaxDimension = Math.min(maxDimension, 800); // Réduit pour mobile
         
         const ratio = targetMaxDimension / maxDimension;
         const newWidth = Math.round(img.width * ratio);
@@ -204,8 +231,8 @@ export default function NoteDetailScreen() {
         // Dessiner l'image redimensionnée
         ctx?.drawImage(img, 0, 0, newWidth, newHeight);
 
-        // Convertir en base64 avec meilleure qualité
-        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.92); // Augmenté de 0.8 à 0.92
+        // Convertir en base64 avec compression optimisée pour mobile
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7); // Réduit pour mobile
         console.log('Image compressée, format:', compressedBase64.substring(0, 30));
         resolve(compressedBase64);
       };
@@ -219,19 +246,36 @@ export default function NoteDetailScreen() {
     const file = target.files?.[0];
     
     if (file && file.type.startsWith('image/')) {
+      // Vérifier la taille du fichier (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        Alert.alert('Erreur', 'L\'image est trop volumineuse. Veuillez choisir une image de moins de 5MB.');
+        target.value = '';
+        return;
+      }
+
+      // Vérifier la limite d'images
+      if ((note?.images || []).length >= 3) {
+        Alert.alert('Limite atteinte', 'Vous ne pouvez ajouter que 3 images maximum par note.');
+        target.value = '';
+        return;
+      }
+
       try {
         console.log('📸 Image sélectionnée:', file.name, 'Taille:', file.size, 'Type:', file.type);
-        
-        // Compresser l'image pour le stockage
-        const compressedBase64 = await compressImage(file);
-        console.log('💾 Image compressée pour stockage, taille:', compressedBase64.length);
         
         if (note) {
           const currentImages = note.images || [];
           const updatedNote = await updateNote(note.id, {
             images: [...currentImages, compressedBase64],
-          });
-          if (updatedNote) {
+        // Vérifier la taille de l'image compressée
+        if (compressedBase64.length > 500000) { // 500KB max en base64
+          console.warn('⚠️ Image compressée encore trop volumineuse:', compressedBase64.length);
+          // Recompresser avec une qualité plus faible
+          const recompressedImage = await compressImage(file, 600, 0.5);
+          await handleImageSelected(recompressedImage);
+        } else {
+          await handleImageSelected(compressedBase64);
+        }
             setNote(updatedNote);
           }
         }
@@ -242,8 +286,7 @@ export default function NoteDetailScreen() {
         reader.onload = (e) => {
           const base64 = e.target?.result as string;
           console.log('📄 Fallback Base64 créé:', base64.substring(0, 30));
-          if (note) {
-            const currentImages = note.images || [];
+          handleImageSelected(base64);
             updateNote(note.id, {
               images: [...currentImages, base64],
             }).then(updatedNote => {

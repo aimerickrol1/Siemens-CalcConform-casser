@@ -73,6 +73,25 @@ export default function CreateNoteScreen() {
     setLoading(true);
     try {
       console.log('📝 Création de la note:', finalTitle);
+      console.log('📸 Nombre d\'images:', images.length);
+      
+      // Vérifier la taille totale des données avant création
+      const totalDataSize = JSON.stringify({
+        title: finalTitle,
+        description: description.trim(),
+        location: location.trim(),
+        tags: tags.trim(),
+        content: content.trim(),
+        images: images
+      }).length;
+      
+      console.log('💾 Taille totale des données:', totalDataSize, 'caractères');
+      
+      if (totalDataSize > 1000000) { // 1MB max
+        Alert.alert('Erreur', 'La note est trop volumineuse. Réduisez le nombre d\'images ou leur qualité.');
+        setLoading(false);
+        return;
+      }
       
       const note = await createNote({
         title: finalTitle,
@@ -92,7 +111,7 @@ export default function CreateNoteScreen() {
       }
     } catch (error) {
       console.error('❌ Erreur lors de la création de la note:', error);
-      Alert.alert(strings.error, 'Impossible de créer la note. Veuillez réessayer.');
+      Alert.alert(strings.error, 'Impossible de créer la note. Essayez de réduire le nombre d\'images.');
     } finally {
       setLoading(false);
     }
@@ -133,9 +152,9 @@ export default function CreateNoteScreen() {
       const img = new Image();
 
       img.onload = () => {
-        // Améliorer la qualité : augmenter la résolution maximale
+        // Réduire la taille pour éviter les problèmes de performance mobile
         const maxDimension = Math.max(img.width, img.height);
-        const targetMaxDimension = Math.min(maxDimension, 1920); // Augmenté de 800 à 1920
+        const targetMaxDimension = Math.min(maxDimension, 800); // Réduit à 800px pour mobile
         
         const ratio = targetMaxDimension / maxDimension;
         const newWidth = Math.round(img.width * ratio);
@@ -153,8 +172,8 @@ export default function CreateNoteScreen() {
         // Dessiner l'image redimensionnée
         ctx?.drawImage(img, 0, 0, newWidth, newHeight);
 
-        // Convertir en base64 avec meilleure qualité
-        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.92); // Augmenté de 0.8 à 0.92
+        // Convertir en base64 avec compression optimisée pour mobile
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7); // Réduit à 0.7 pour mobile
         console.log('Image compressée, format:', compressedBase64.substring(0, 30));
         resolve(compressedBase64);
       };
@@ -168,13 +187,35 @@ export default function CreateNoteScreen() {
     const file = target.files?.[0];
     
     if (file && file.type.startsWith('image/')) {
+      // Vérifier la taille du fichier (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        Alert.alert('Erreur', 'L\'image est trop volumineuse. Veuillez choisir une image de moins de 5MB.');
+        target.value = '';
+        return;
+      }
+
+      // Limiter le nombre d'images à 3 pour éviter les problèmes de performance
+      if (images.length >= 3) {
+        Alert.alert('Limite atteinte', 'Vous ne pouvez ajouter que 3 images maximum par note.');
+        target.value = '';
+        return;
+      }
+
       try {
         console.log('📸 Image sélectionnée:', file.name, 'Taille:', file.size, 'Type:', file.type);
         
         // Compresser l'image pour le stockage
         const compressedImage = await compressImage(file);
-        setImages(prev => [...prev, compressedImage]);
         
+        // Vérifier la taille de l'image compressée
+        if (compressedImage.length > 500000) { // 500KB max en base64
+          console.warn('⚠️ Image compressée encore trop volumineuse:', compressedImage.length);
+          // Recompresser avec une qualité plus faible
+          const recompressedImage = await compressImage(file, 600, 0.5);
+          setImages(prev => [...prev, recompressedImage]);
+        } else {
+          setImages(prev => [...prev, compressedImage]);
+        }
         // Réinitialiser l'input
         if (target) {
           target.value = '';
@@ -182,6 +223,7 @@ export default function CreateNoteScreen() {
       } catch (error) {
         console.error('Erreur lors du traitement de l\'image:', error);
         Alert.alert('Erreur', 'Impossible de traiter l\'image sélectionnée.');
+        target.value = '';
       }
     }
   };
@@ -241,9 +283,12 @@ export default function CreateNoteScreen() {
             <TouchableOpacity
               style={styles.addPhotoButton}
               onPress={handleAddImage}
+              disabled={images.length >= 3}
             >
               <Camera size={16} color={theme.colors.primary} />
-              <Text style={styles.addPhotoText}>Ajouter une photo</Text>
+              <Text style={styles.addPhotoText}>
+                {images.length >= 3 ? 'Limite atteinte (3 max)' : 'Ajouter une photo'}
+              </Text>
             </TouchableOpacity>
           </View>
 

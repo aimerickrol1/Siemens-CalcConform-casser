@@ -105,6 +105,23 @@ export default function EditNoteScreen() {
   const handleSave = async () => {
     if (!validateForm() || !note) return;
 
+    // Vérifier la taille totale des données avant sauvegarde
+    const totalDataSize = JSON.stringify({
+      title: title.trim(),
+      description: description.trim(),
+      location: location.trim(),
+      tags: tags.trim(),
+      content: content.trim(),
+      images: images
+    }).length;
+    
+    console.log('💾 Taille totale des données:', totalDataSize, 'caractères');
+    
+    if (totalDataSize > 1000000) { // 1MB max
+      Alert.alert('Erreur', 'La note est trop volumineuse. Réduisez le nombre d\'images ou leur qualité.');
+      return;
+    }
+
     setLoading(true);
     try {
       console.log('💾 Sauvegarde de la note:', note.id);
@@ -144,8 +161,9 @@ export default function EditNoteScreen() {
       const img = new Image();
 
       img.onload = () => {
+        // Réduire la taille pour éviter les problèmes de performance mobile
         const maxDimension = Math.max(img.width, img.height);
-        const targetMaxDimension = Math.min(maxDimension, 1920);
+        const targetMaxDimension = Math.min(maxDimension, 800); // Réduit à 800px pour mobile
         
         const ratio = targetMaxDimension / maxDimension;
         const newWidth = Math.round(img.width * ratio);
@@ -154,14 +172,17 @@ export default function EditNoteScreen() {
         canvas.width = newWidth;
         canvas.height = newHeight;
 
+        // Améliorer la qualité de rendu
         if (ctx) {
           ctx.imageSmoothingEnabled = true;
           ctx.imageSmoothingQuality = 'high';
         }
 
+        // Dessiner l'image redimensionnée
         ctx?.drawImage(img, 0, 0, newWidth, newHeight);
 
-        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.92);
+        // Convertir en base64 avec compression optimisée pour mobile
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7); // Réduit à 0.7 pour mobile
         console.log('Image compressée, format:', compressedBase64.substring(0, 30));
         resolve(compressedBase64);
       };
@@ -175,25 +196,42 @@ export default function EditNoteScreen() {
     const file = target.files?.[0];
     
     if (file && file.type.startsWith('image/')) {
+      // Vérifier la taille du fichier (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        Alert.alert('Erreur', 'L\'image est trop volumineuse. Veuillez choisir une image de moins de 5MB.');
+        target.value = '';
+        return;
+      }
+
+      // Limiter le nombre d'images à 3 pour éviter les problèmes de performance
+      if (images.length >= 3) {
+        Alert.alert('Limite atteinte', 'Vous ne pouvez ajouter que 3 images maximum par note.');
+        target.value = '';
+        return;
+      }
+
       try {
         console.log('📸 Image sélectionnée:', file.name, 'Taille:', file.size, 'Type:', file.type);
         
-        const compressedBase64 = await compressImage(file);
-        console.log('💾 Image compressée pour stockage, taille:', compressedBase64.length);
+        // Compresser l'image pour le stockage
+        const compressedImage = await compressImage(file);
         
-        setImages(prev => [...prev, compressedBase64]);
+        // Vérifier la taille de l'image compressée
+        if (compressedImage.length > 500000) { // 500KB max en base64
+          console.warn('⚠️ Image compressée encore trop volumineuse:', compressedImage.length);
+          // Recompresser avec une qualité plus faible
+          const recompressedImage = await compressImage(file, 600, 0.5);
+          setImages(prev => [...prev, recompressedImage]);
+        } else {
+          setImages(prev => [...prev, compressedImage]);
+        }
       } catch (error) {
         console.error('Erreur lors de la compression de l\'image:', error);
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const base64 = e.target?.result as string;
-          console.log('📄 Fallback Base64 créé:', base64.substring(0, 30));
-          setImages(prev => [...prev, base64]);
-        };
-        reader.readAsDataURL(file);
+        Alert.alert('Erreur', 'Impossible de traiter l\'image sélectionnée.');
       }
     }
     
+    // Reset input
     target.value = '';
   };
 

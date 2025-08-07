@@ -321,9 +321,12 @@ export default function EditNoteScreen() {
             <TouchableOpacity
               style={styles.addPhotoButton}
               onPress={handleAddImage}
+              disabled={images.length >= 3}
             >
               <Camera size={16} color={theme.colors.primary} />
-              <Text style={styles.addPhotoText}>Ajouter une photo</Text>
+              <Text style={styles.addPhotoText}>
+                {images.length >= 3 ? 'Limite atteinte (3 max)' : 'Ajouter une photo'}
+              </Text>
             </TouchableOpacity>
           </View>
 
